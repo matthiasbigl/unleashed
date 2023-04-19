@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.cdnfonts.com/css/futura-pt');
+
+/* Path: rate-me\app\pages\index.css */
+* {
+    font-family: 'Futura PT', sans-serif;
+}
+@layer components{
+
+    .gradient {
+        --size: 250px;
+        --speed: 50s;
+        --easing: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+
+        width: var(--size);
+        height: var(--size);
+        filter: blur(calc(var(--size) / 5));
+        background-image: linear-gradient(hsl(158, 82, 57, 85%), hsl(252, 82, 57));
+        animation: rotate var(--speed) var(--easing) alternate infinite;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+}
+:root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+            to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media (min-width: 720px) {
+    .gradient {
+        --size: 500px;
+    }
+}
+
+
+/* This is just to transition when you change the viewport size. */
+* {
+    transition: all 0.25s ease-out;
+}
+
