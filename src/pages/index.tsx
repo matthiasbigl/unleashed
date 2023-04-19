@@ -59,49 +59,33 @@ const Home: NextPage = () => {
               </div>
             </div>
 
-            <div className="flex justify-around w-full gap-2 px-5 text-center">
-              <div className="flex flex-col items-center justify-center w-1/4
-              gap-2
-              ">
-                <h3 className="text-2xl font-semibold ">
+            <div className="grid grid-cols-3 md:gap-4 gap-8 px-5 text-center md:grid-cols-3 md:mx-10">
+              <div className="col-span-3 md:col-span-1 flex flex-col items-center justify-center gap-2">
+                <h3 className="text-2xl font-semibold">
                   No censorship:
                 </h3>
                 <p>
-                  Unlike other social media platforms that impose strict content policies and often remove content that
-                  doesn't fit their guidelines, Unleashed has no censorship. We believe that people should have the
-                  freedom to express themselves in any way they choose, as long as it doesn't harm others.
+                  Unlike other social media platforms that impose strict content policies and often remove content that doesn't fit their guidelines, Unleashed has no censorship. We believe that people should have the freedom to express themselves in any way they choose, as long as it doesn't harm others.
                 </p>
-
               </div>
-              <div className="flex flex-col items-center justify-center w-1/4
-              gap-2
-              ">
-                <h3 className="text-2xl font-semibold ">
+              <div className="col-span-3 md:col-span-1 flex flex-col items-center justify-center gap-2">
+                <h3 className="text-2xl font-semibold">
                   Creativity:
                 </h3>
                 <p>
-                  Unleashed encourages creativity by providing a platform for users to share their unique perspectives
-                  and talents. We believe that creativity should be celebrated, and our platform is designed to showcase
-                  the creative work of our users.
+                  Unleashed encourages creativity by providing a platform for users to share their unique perspectives and talents. We believe that creativity should be celebrated, and our platform is designed to showcase the creative work of our users.
                 </p>
-
               </div>
-              <div className="flex flex-col items-center justify-center w-1/4
-              gap-2
-              m-4
-              ">
-                <h3 className="text-2xl font-semibold ">
+              <div className="col-span-3 md:col-span-1 flex flex-col items-center justify-center gap-2">
+                <h3 className="text-2xl font-semibold">
                   Community:
                 </h3>
                 <p>
-                  Unleashed is a social media network that prioritizes community. We believe that social media should be
-                  a place where people can connect and engage with others who share their interests and values. Our
-                  platform is designed to foster a sense of community and to facilitate meaningful connections between
-                  our users.
+                  Unleashed is a social media network that prioritizes community. We believe that social media should be a place where people can connect and engage with others who share their interests and values. Our platform is designed to foster a sense of community and to facilitate meaningful connections between our users.
                 </p>
-
               </div>
             </div>
+
 
           </div>
 
