@@ -71,7 +71,7 @@ export const postsRouter = createTRPCRouter({
     }),
 
     //get the 10 latest posts in descending order
-    getLatest: privateProcedure.query(async () => {
+    getLatest: privateProcedure.query(async ({}) => {
       const posts = await prisma.post.findMany({
         take: 10,
         orderBy: {
@@ -80,9 +80,11 @@ export const postsRouter = createTRPCRouter({
         include: {
           images: true
         }
-      });
-      return await addUserDataToPosts(posts);
 
+      });
+
+      return await addUserDataToPosts(posts);
     })
+
   }
 );

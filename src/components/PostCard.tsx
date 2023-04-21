@@ -4,10 +4,8 @@ import { RouterOutputs } from "~/utils/api";
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
 
-
-// extend the Post type with an array of images
 type PostWithImagesAndUser = RouterOutputs["posts"]["getLatest"][number]
-//
+
 export default function PostCard(props: PostWithImagesAndUser) {
   console.log(props);
   return (
@@ -51,9 +49,11 @@ function ImageCarousel ({images}: {images: Image[]}) {
     setCurrentIndex(newIndex);
   };
 
+  // @ts-ignore
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
+
 
   return (
     <div className='max-w-[1400px] h-[600px] w-full m-auto pt-2 pb-16 px-4 relative group'>
