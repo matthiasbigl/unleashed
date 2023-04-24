@@ -53,7 +53,7 @@ export default function PostCard(props: PostWithImagesAndUser) {
 
   return (
     <div
-      className="flex flex-col md:rounded-md md:border border-b border-neutral-800 bg-zinc-800/30 md:w-1/2 lg:w-1/3 w-screen ">
+      className="flex flex-col md:rounded-md md:border border-b border-neutral-800 bg-zinc-800/30 md:w-1/4  w-screen ">
       <div className="flex flex-row items-center justify-center w-full h-12 px-4 md:my-2 ">
         <h1 className="text-lg font-semibold">{props.user.username}</h1>
         <div

@@ -24,6 +24,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
   });
 
 
+
   const handlers = useSwipeable({
     onSwipedRight: () => prevSlide(),
     onSwipedLeft: () => nextSlide(),
@@ -37,12 +38,9 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
     images[0]?.url && (img.src = images[0].url);
     console.log(img.src);
     img.onload = () => {
-      setDimensions({
-          width: img.width,
-          height: img.height
-        }
-      );
-    };
+      const { width, height } = img;
+      setDimensions({ width, height });
+    }
   }, [images, containerRef.current]);
 
   const prevSlide = () => {
@@ -62,15 +60,16 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
   };
 
   return (
-    <div className="relative w-full h-full" ref={containerRef}>
-      <div {...handlers}>
+    <div className="relative w-full " ref={containerRef}>
+      <div {...handlers}
+      className={``} >
         <NextImage
           src={images[currentIndex]?.url || ""}
           alt={`Image ${currentIndex + 1}`}
           width={dimensions.width}
           height={dimensions.height}
-          className="transition-opacity duration-500 ease-out"
-          style={{ opacity: 1, transition: "opacity 0.5s ease-in-out" }}
+          className=""
+          style={{ opacity: 1, transition: "opacity   0.5s ease-in-out" }}
           priority={true}
         />
 
@@ -98,7 +97,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
             {images.map((_, index) => (
               <button
                 key={index}
-                className={`w-3 h-1 mx-1 rounded-full ${index === currentIndex ? "bg-blue-500" : "bg-white"}`}
+                className={`w-8 h-2 mx-3 rounded-full ${index === currentIndex ? "bg-blue-500" : "bg-white"}`}
                 onClick={() => goToSlide(index)}
               ></button>
             ))}

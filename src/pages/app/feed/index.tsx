@@ -7,7 +7,9 @@ import AppLayout from "~/pages/app/AppLayout";
 const Feed: NextPage = () => {
   const user = useUser();
 
-  if (!user.isSignedIn) {
+
+
+  if (!user.isSignedIn&&user.isLoaded) {
     return (
       <AppLayout>
         <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
