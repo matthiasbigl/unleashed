@@ -9,7 +9,7 @@ const AppLayout = ({ children }: LayoutProps) => {
   return (
     <>
       <main className="flex flex-row items-center justify-center w-full h-full md:p-4">
-        <div className="hidden md:flex fixed left-0 top-0 h-full w-full">
+        <div className="hidden md:flex fixed left-0 top-0 h-full">
           <SideNav />
         </div>
         <div className="w-full ">

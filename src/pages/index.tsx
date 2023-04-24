@@ -1,9 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Topbar from "~/components/topbar";
+import { SignInButton, useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 
 const Home: NextPage = () => {
+
+  const user = useUser();
 
 
   return (
@@ -14,7 +18,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <Topbar/>
+        <Topbar />
 
         <main className="flex min-h-screen flex-col items-center justify-center bg-black p-10">
           <div className="flex items-center justify-center">
@@ -26,7 +30,7 @@ const Home: NextPage = () => {
                ">
 
                 <div
-                  className="mt-auto text-center justify-center items center w-full">
+                  className="mt-auto flex flex-col text-center justify-center items-center w-full gap-4">
                   <h2 className="md:text-5xl text-2xl font-semibold text-white">
                     Welcome to
                   </h2>
@@ -39,7 +43,32 @@ const Home: NextPage = () => {
                     <br />
                     you unleash your creativity
                   </a>
+                  <div>
+                    {
+                      user.isSignedIn ? (
+                        <Link
+                          className="rounded-md bg-gradient-to-r from-blue-400 to-blue-600 w-32 h-14
+                    hover:scale-105 hover:shadow-lg hover:from-blue-500 hover:to-blue-700 transition duration-150 ease-in-out
+                    cursor-pointer
+                    font-bold text-xl flex justify-center items-center "
+                          href="/app"
+                        >
+                          Go to App
+                        </Link>
+                      ) : (
+                        <div
+                          className=" rounded-md bg-gradient-to-r from-blue-400 to-blue-600 w-32 h-14
+                    hover:scale-105 hover:shadow-lg hover:from-blue-500 hover:to-blue-700 transition duration-150 ease-in-out
+                    cursor-pointer
+                    font-bold text-xl flex justify-center items-center"
+                        >
+                          <SignInButton />
+                        </div>
 
+                      )
+
+                    }
+                  </div>
 
                 </div>
                 <div

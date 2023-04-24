@@ -32,7 +32,6 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
   });
 
   useEffect(() => {
-    console.log("useEffect");
     if (!containerRef.current) return;
     const img = new Image();
     images[0]?.url && (img.src = images[0].url);

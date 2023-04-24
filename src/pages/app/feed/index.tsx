@@ -10,7 +10,7 @@ const Feed: NextPage = () => {
   if (!user.isSignedIn) {
     return (
       <AppLayout>
-        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center">
+        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
           <h1 className="text-6xl font-bold">
             It looks like you're not signed in
           </h1>
