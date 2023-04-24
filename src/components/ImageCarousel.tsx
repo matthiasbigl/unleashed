@@ -71,6 +71,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
           height={dimensions.height}
           className="transition-opacity duration-500 ease-out"
           style={{ opacity: 1, transition: "opacity 0.5s ease-in-out" }}
+          priority={true}
         />
 
         <div className="hidden md:block">

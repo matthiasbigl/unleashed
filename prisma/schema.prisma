@@ -29,7 +29,7 @@ model Image {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  url       String
+  url       String   @unique @db.VarChar(500)
   post      Post     @relation(fields: [postId], references: [id])
   postId    Int
 }
