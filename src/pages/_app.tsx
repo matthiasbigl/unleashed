@@ -5,7 +5,7 @@ import { type Session } from "next-auth";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.scss";
-import Layout from "~/components/Layout";
+
 import { ClerkProvider } from "@clerk/nextjs";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -13,10 +13,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
                                                        pageProps: { session, ...pageProps }
                                                      }) => {
   return (
-   <ClerkProvider {...pageProps}>
-      <Layout>
+    <ClerkProvider {...pageProps}>
         <Component {...pageProps} />
-      </Layout>
     </ClerkProvider>
 
   );
