@@ -24,29 +24,27 @@ export default function PostCard(props: PostWithImagesAndUser) {
 
   useEffect(() => {
     //check if the user has liked this post
+    setLikeCount(props.post.likeCount);
     if (props.post.likes) {
-      setIsLiked(props.post.likes.some(like => like.userId === user.user?.id));
+      const hasLiked = props.post.likes.find((like) => like.userId === user.user?.id);
+      if (hasLiked) {
+        setIsLiked(true);
+      }
     }
-    setLikeCount(props.post.likes?.length ?? 0);
 
-  }, [props.post.likes, user.user?.id]);
-
+  }, [user.user?.id]);
 
 
-
-  const { mutate } = api.posts.like.useMutation({
-    onSuccess: () => {
-      setIsLiked(!isLiked);
-      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-    }
-  });
+  const { mutate } = api.posts.like.useMutation({});
 
 
   const handleLikeClick = () => {
     if (user.isSignedIn)
-      mutate({
-        postId: props.post.id
-      });
+      setIsLiked(!isLiked);
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    mutate({
+      postId: props.post.id
+    });
 
   };
 

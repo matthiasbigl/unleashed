@@ -1,13 +1,13 @@
 import { type NextPage } from "next";
 import { api } from "~/utils/api";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import PostCard from "~/components/PostCard";
+import React, { lazy, Suspense } from 'react';
 import AppLayout from "~/pages/app/AppLayout";
+
+const PostCard = lazy(() => import('~/components/PostCard'));
 
 const Feed: NextPage = () => {
   const user = useUser();
-
-
 
   if (!user.isSignedIn&&user.isLoaded) {
     return (
@@ -24,21 +24,33 @@ const Feed: NextPage = () => {
           </div>
         </div>
       </AppLayout>
-
     );
   }
 
-  const { data } = api.posts.getLatest.useQuery();
+  const { data,isLoading } = api.posts.getLatest.useQuery();
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
+          <h1 className="text-6xl font-bold">
+            Loading...
+          </h1>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
       <div className="flex flex-col md:gap-4 w-full items-center">
-        {data?.map((post,id) => (
-          <PostCard key={id} {...post} />
-        ))}
+        <Suspense fallback={<div>Loading...</div>}>
+          {data?.map((post,id) => (
+            <PostCard key={id} {...post} />
+          ))}
+        </Suspense>
       </div>
     </AppLayout>
-
   );
 };
 

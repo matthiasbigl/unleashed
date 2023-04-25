@@ -73,31 +73,34 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
           priority={true}
         />
 
-        <div className="hidden md:block">
-          <div className="absolute top-0 bottom-0 left-0 flex items-center">
-            <button
-              className="w-6 h-6 ml-2 text-white bg-gray-500 rounded-full"
-              onClick={() => prevSlide()}
-            >
-              <BsChevronCompactLeft className="w-3 h-3 m-auto" />
-            </button>
-          </div>
-          <div className="absolute top-0 bottom-0 right-0 flex items-center">
-            <button
-              className="w-6 h-6 mr-2 text-white bg-gray-500 rounded-full"
-              onClick={() => nextSlide()}
-            >
-              <BsChevronCompactRight className="w-3 h-3 m-auto" />
-            </button>
-          </div>
-        </div>
+        {images.length > 1 && (
+          <div className="hidden md:block">
+            <div className="absolute top-0 bottom-0 left-0 flex items-center">
+              <button
+                className="w-6 h-6 ml-2 text-white bg-gray-500 rounded-full"
+                onClick={() => prevSlide()}
+              >
+                <BsChevronCompactLeft className="w-3 h-3 m-auto" />
+              </button>
+            </div>
+            <div className="absolute top-0 bottom-0 right-0 flex items-center">
+              <button
+                className="w-6 h-6 mr-2 text-white bg-gray-500 rounded-full"
+                onClick={() => nextSlide()}
+              >
+                <BsChevronCompactRight className="w-3 h-3 m-auto" />
+              </button>
+            </div>
+          </div>)
+        }
+
 
         <div className="absolute bottom-0 left-0 right-0 mb-4">
           <div className="w-full flex justify-center items-center">
             {images.map((_, index) => (
               <button
                 key={index}
-                className={`w-8 h-2 mx-3 rounded-full ${index === currentIndex ? "bg-blue-500" : "bg-white"}`}
+                className={`w-6 h-2 mx-3 rounded-full ${index === currentIndex ? "bg-blue-500" : "bg-white"}`}
                 onClick={() => goToSlide(index)}
               ></button>
             ))}

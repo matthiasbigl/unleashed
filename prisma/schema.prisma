@@ -16,10 +16,10 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean  @default(false)
+  likeCount Int      @default(0) @db.Int
   caption   String?
   images    Image[]
   likes     Like[]
-  likeCount Int      @default(0)
   userId    String
 
   @@index([userId])

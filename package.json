@@ -8,7 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "static":"next build && next export"
+    "static": "next build && next export"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.16.4",
@@ -20,6 +20,7 @@
     "@trpc/next": "^10.18.0",
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
+    "memoize-one": "^6.0.0",
     "next": "^13.2.4",
     "next-auth": "^4.21.0",
     "react": "18.2.0",

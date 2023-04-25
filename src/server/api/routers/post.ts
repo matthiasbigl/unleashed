@@ -48,6 +48,8 @@ const addUserDataToPosts = async (posts: Post[]) => {
     };
   });
 };
+
+
 export const postsRouter = createTRPCRouter({
 
 
@@ -64,8 +66,18 @@ export const postsRouter = createTRPCRouter({
       },
       include: {
         images: true,
-        likes: true
-      }
+        likes: {
+          where: {
+            OR: [
+              {
+                userId: ctx.userId,
+              },
+              {
+              },
+            ],
+          },
+        },
+      },
     });
     return await addUserDataToPosts(posts);
   }),
@@ -79,11 +91,20 @@ export const postsRouter = createTRPCRouter({
       },
       include: {
         images: true,
-        likes: true
-      }
+        likes: {
+          where: {
+            OR: [
+              {
+                userId: ctx.userId,
+              },
+              {
+
+              },
+            ],
+          },
+        },
+      },
     });
-
-
     return await addUserDataToPosts(posts);
   }),
 
@@ -96,21 +117,19 @@ export const postsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
 
-
-
       //check if the user has already liked the post if so delete the like
       const foundLike = await ctx.prisma.like.findFirst({
-          where: {
-            userId,
-            postId: input.postId
-          }
-        }
-      );
+        where: {
+          userId,
+          postId: input.postId,
+        },
+      });
+
       if (foundLike) {
         await ctx.prisma.like.delete({
           where: {
-            id: foundLike.id
-          }
+            id: foundLike.id,
+          },
         });
         return null;
       }
@@ -118,23 +137,23 @@ export const postsRouter = createTRPCRouter({
       const like = await ctx.prisma.like.create({
         data: {
           userId,
-          postId: input.postId
-        }
+          postId: input.postId,
+        },
       });
-      //update the post like count
+
       await ctx.prisma.post.update({
         where: {
-          id: input.postId
+          id: input.postId,
         },
         data: {
-          likes: {
-            //@ts-ignore
-            increment:1
-          }
-        }
-      })
+          likeCount: {
+            increment: 1,
+          },
+        },
+      });
 
       return like;
     })
+
 
 });
