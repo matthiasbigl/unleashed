@@ -34,7 +34,10 @@ const Feed: NextPage = () => {
       <AppLayout>
         <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
           <h1 className="text-6xl font-bold">
-            Loading...
+            Loading
+            <span className="animate-pulse inline-flex h-3 w-3 rounded-full bg-white ml-2"></span>
+            <span className="animate-pulse inline-flex h-3 w-3 rounded-full bg-white ml-2"></span>
+            <span className="animate-pulse inline-flex h-3 w-3 rounded-full bg-white ml-2"></span>
           </h1>
         </div>
       </AppLayout>

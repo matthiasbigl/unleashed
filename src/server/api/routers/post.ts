@@ -131,6 +131,17 @@ export const postsRouter = createTRPCRouter({
             id: foundLike.id,
           },
         });
+        await ctx.prisma.post.update({
+          where: {
+            id: input.postId,
+          },
+          data: {
+            likeCount: {
+              increment: -1,
+            },
+          },
+        });
+
         return null;
       }
 
