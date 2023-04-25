@@ -7,16 +7,24 @@ import { api } from "~/utils/api";
 import "~/styles/globals.scss";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import Head from "next/head";
 
 const MyApp: AppType<{ session: Session | null }> = ({
                                                        Component,
                                                        pageProps: { session, ...pageProps }
                                                      }) => {
   return (
-    <ClerkProvider {...pageProps}>
-        <Component {...pageProps} />
-    </ClerkProvider>
+    <>
+      <Head>
+        <title>Unleashed</title>
+        <meta name="description" content="The social media Platform that lets you unleash your creativity" />
+        <link rel="icon" href="/favicon.ico" />
 
+      </Head>
+      <ClerkProvider {...pageProps}>
+        <Component {...pageProps} />
+      </ClerkProvider>
+    </>
   );
 };
 

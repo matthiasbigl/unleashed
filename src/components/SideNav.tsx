@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { FaHome, FaSearch, FaHeart, FaUser } from 'react-icons/fa';
+import { FaHome, FaSearch, FaHeart, FaUser, FaPlus } from "react-icons/fa";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { mockSession } from "next-auth/client/__tests__/helpers/mocks";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 
 interface NavItemProps {
@@ -16,6 +18,7 @@ interface NavItemProps {
   name: string;
   active: boolean;
   onClick: () => void;
+
 }
 
 const NavItem = ({ icon, name, active, onClick }: NavItemProps) => {
@@ -37,6 +40,8 @@ const NavItem = ({ icon, name, active, onClick }: NavItemProps) => {
 };
 const SideNav = () => {
 
+  const router = useRouter();
+
   const [activeNav, setActiveNav] = useState<string>('Home');
 
   const user = useUser();
@@ -44,11 +49,17 @@ const SideNav = () => {
 
 
   const navItems = [
-    { name: 'Home', icon: <FaHome size={24} /> },
-    { name: 'Search', icon: <FaSearch size={24} /> },
-    { name: 'Activity', icon: <FaHeart size={24} /> },
-    { name: 'Profile', icon: <FaUser size={24} /> },
+    { name: 'Home', icon: <FaHome size={24} />, link: "/" },
+    { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
+    { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },
+    { name: 'Profile', icon: <FaUser size={24} />, link: "profile"},
+    {name: 'new Post', icon: <FaPlus size={24} />, link: "newpost"}
   ];
+
+  const handleClick=(name:string,link:string)=>{
+    setActiveNav(name)
+    router.push(link)
+  }
 
   return (
     <div className=" border-r border-gray-700 w-64 flex flex-col h-full  bg-gradient-to-b bg-zinc-800/30 z-20 gap-y-4">
@@ -66,7 +77,9 @@ const SideNav = () => {
               icon={item.icon}
               name={item.name}
               active={activeNav === item.name}
-              onClick={() => setActiveNav(item.name)}
+              onClick={() => handleClick(item.name, item.link)
+
+            }
             />
           ))}
       </nav>

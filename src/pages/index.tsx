@@ -12,11 +12,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Unleashed</title>
-        <meta name="description" content="The social media Platform that lets you unleash your creativity" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+
       <div className="flex flex-col items-center justify-center min-h-screen">
         <Topbar />
 

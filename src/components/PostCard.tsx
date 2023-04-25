@@ -87,8 +87,8 @@ export default function PostCard(props: PostWithImagesAndUser) {
       </div>
       <div className="flex flex-col items-start justify-start px-4 py-2">
         <span className="text-gray-500 text-sm">{likeCount} likes</span>
-        <div className={`flex flex-row items-center justify-start gap-x-2`}>
-          <span className="text-gray-500 text-sm font-semibold">{props.user.username}</span>
+        <div className={`flex flex-row items-start justify-start gap-x-2`}>
+          <span className="text-gray-500 text-sm font-semibold  ">{props.user.username}</span>
           <span className="text-gray-500 text-sm">{props.post.caption}</span>
         </div>
       </div>
