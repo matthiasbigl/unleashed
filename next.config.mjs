@@ -18,9 +18,6 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  typescript:{
-    ignoreBuildErrors: true,
-  },
   images: {
     remotePatterns: [
       {
