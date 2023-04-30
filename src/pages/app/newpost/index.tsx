@@ -5,13 +5,17 @@ import AppLayout from "~/pages/app/AppLayout";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function NewPost(): JSX.Element {
+
   const user = useUser();
+  const router = useRouter();
 
 
   const { mutateAsync: fetchPresignedUrl } = api.s3.getStandardUploadPresignedUrl.useMutation();
   const { mutateAsync: createPost } = api.posts.create.useMutation();
+
 
 
 
@@ -46,8 +50,6 @@ export default function NewPost(): JSX.Element {
 
     for (const file of selectedImages) {
       const presignedUrlResponse = await fetchPresignedUrl({ key: file.name });
-
-      file=
 
 
       if (presignedUrlResponse) {
@@ -84,7 +86,7 @@ export default function NewPost(): JSX.Element {
       images: uploadedKeys,
     });
 
-    setIsUploading(false)
+    router.push("/app");
 
     console.log("Uploaded image URLs:", uploadedImageUrls);
     console.log("Caption:", caption);

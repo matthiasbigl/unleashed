@@ -70,8 +70,9 @@ const ImageCarousel = React.memo(({ images }: ImageCarouselProps) => {
           src={
             "https://unleashed-images.s3.eu-central-1.amazonaws.com/" +
             images[currentIndex]?.url ||
-            ""
+            "haha"
           }
+
           alt={`Image ${currentIndex + 1}`}
           width={dimensions.width}
           height={dimensions.height}
