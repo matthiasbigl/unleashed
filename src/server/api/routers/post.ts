@@ -8,6 +8,7 @@ import { TRPCError } from "@trpc/server";
 import { clerkClient } from "@clerk/nextjs/api";
 import { Post } from ".prisma/client";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
+import { env } from "~/env.mjs";
 
 
 const addUserDataToPosts = async (posts: Post[]) => {
@@ -70,14 +71,13 @@ export const postsRouter = createTRPCRouter({
           where: {
             OR: [
               {
-                userId: ctx.userId,
+                userId: ctx.userId
               },
-              {
-              },
-            ],
-          },
-        },
-      },
+              {}
+            ]
+          }
+        }
+      }
     });
     return await addUserDataToPosts(posts);
   }),
@@ -95,23 +95,22 @@ export const postsRouter = createTRPCRouter({
           where: {
             OR: [
               {
-                userId: ctx.userId,
+                userId: ctx.userId
               },
-              {
-
-              },
-            ],
-          },
-        },
-      },
+              {}
+            ]
+          }
+        }
+      }
     });
     return await addUserDataToPosts(posts);
   }),
 
+
   like: privateProcedure
     .input(
       z.object({
-        postId: z.number(),
+        postId: z.number()
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -121,25 +120,25 @@ export const postsRouter = createTRPCRouter({
       const foundLike = await ctx.prisma.like.findFirst({
         where: {
           userId,
-          postId: input.postId,
-        },
+          postId: input.postId
+        }
       });
 
       if (foundLike) {
         await ctx.prisma.like.delete({
           where: {
-            id: foundLike.id,
-          },
+            id: foundLike.id
+          }
         });
         await ctx.prisma.post.update({
           where: {
-            id: input.postId,
+            id: input.postId
           },
           data: {
             likeCount: {
-              increment: -1,
-            },
-          },
+              increment: -1
+            }
+          }
         });
 
         return null;
@@ -148,23 +147,51 @@ export const postsRouter = createTRPCRouter({
       const like = await ctx.prisma.like.create({
         data: {
           userId,
-          postId: input.postId,
-        },
+          postId: input.postId
+        }
       });
 
       await ctx.prisma.post.update({
         where: {
-          id: input.postId,
+          id: input.postId
         },
         data: {
           likeCount: {
-            increment: 1,
-          },
-        },
+            increment: 1
+          }
+        }
       });
 
       return like;
+    }),
+
+  create: privateProcedure
+    .input(z.object({
+      caption: z.string(),
+      images: z.array(z.string())
+    })).mutation(async ({ ctx, input }) => {
+      //create the post then create each image url and add it to the post
+      const post = await ctx.prisma.post.create({
+        data: {
+          caption: input.caption,
+          userId: ctx.userId
+        }
+      });
+
+      const images = await Promise.all(
+        input.images.map(async (image) => {
+            const url = await ctx.prisma.image.create({
+              data: {
+                url: image,
+                postId: post.id
+              }
+            });
+            return url;
+          }
+        )
+      );
+      return{
+        post
+      }
     })
-
-
 });

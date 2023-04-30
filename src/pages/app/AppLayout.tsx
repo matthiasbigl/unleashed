@@ -12,7 +12,7 @@ const AppLayout = ({ children }: LayoutProps) => {
         <div className="hidden md:flex fixed left-0 top-0 h-full">
           <SideNav />
         </div>
-        <div className="w-full ">
+        <div className="w-full flex justify-center items-center ">
           {children}
         </div>
       </main>
