@@ -178,6 +178,8 @@ export const postsRouter = createTRPCRouter({
         }
       });
 
+
+
       const images = await Promise.all(
         input.images.map(async (image) => {
             const url = await ctx.prisma.image.create({

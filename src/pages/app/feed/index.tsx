@@ -12,7 +12,7 @@ const Feed: NextPage = () => {
   if (!user.isSignedIn&&user.isLoaded) {
     return (
       <AppLayout>
-        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
+        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50 ">
           <h1 className="text-6xl font-bold">
             It looks like you're not signed in
           </h1>
@@ -46,7 +46,7 @@ const Feed: NextPage = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col md:gap-4 w-full items-center">
+      <div className="flex flex-col md:gap-4 w-full items-center mb-24">
         <Suspense fallback={<div>Loading...</div>}>
           {data?.map((post,id) => (
             <PostCard key={id} {...post} />

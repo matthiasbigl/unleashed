@@ -88,9 +88,6 @@ export default function NewPost(): JSX.Element {
 
     router.push("/app");
 
-    console.log("Uploaded image URLs:", uploadedImageUrls);
-    console.log("Caption:", caption);
-
     // Reset state after successful upload
     setSelectedImages([]);
     setCaption("");

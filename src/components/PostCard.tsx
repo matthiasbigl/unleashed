@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Image, Like } from ".prisma/client";
+import React, { PropsWithChildren, useEffect, useState } from "react";
+import { Image as ImageType, Like } from ".prisma/client";
 import { RouterOutputs } from "~/utils/api";
 import { BsChat, BsFillSendFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import ImageCarousel from "~/components/ImageCarousel";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image"
+import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
+import { Props } from "next/script";
+import { classNames } from "@react-buddy/ide-toolbox/dist/util/classNames";
+
+
+
 
 
 type PostWithImagesAndUser = RouterOutputs["posts"]["getLatest"][number] & {
   post: {
-    images?: Image[];
+    images?: ImageType[];
     likes?: Like[];
   };
 };
@@ -65,7 +72,7 @@ export default function PostCard(props: PostWithImagesAndUser) {
       </div>
       {
         props.post.images ? (
-            <ImageCarousel images={props.post.images} />
+          <ImageCarousel images={props.post.images} />
           )
           : null
       }
@@ -98,3 +105,6 @@ export default function PostCard(props: PostWithImagesAndUser) {
   );
 
 }
+
+
+// @ts-ignore
