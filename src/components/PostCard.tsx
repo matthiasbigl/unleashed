@@ -66,10 +66,12 @@ export default function PostCard(props: PostWithImagesAndUser) {
         <div
           className="flex flex-row items-center justify-end w-full h-full px-4 gap-x-4"
         >
-          <img
+          <Image
             //a circle avatar
+            width={40}
+            height={40}
             className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 h-10"
-            src={props.user.profileImageUrl} />
+            src={props.user.profileImageUrl}  alt={props.user.username}/>
         </div>
       </div>
       {

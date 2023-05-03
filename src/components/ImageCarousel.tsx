@@ -54,7 +54,6 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption }) => {
               <NextImage
                 src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
                 alt={caption ? caption : ""}
-                placeholder="blur"
                 fill
                 quality={30}
                 priority={index === currentIndex}
