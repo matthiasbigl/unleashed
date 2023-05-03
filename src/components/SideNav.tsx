@@ -51,9 +51,10 @@ const SideNav = () => {
   const navItems = [
     { name: 'Home', icon: <FaHome size={24} />, link: "/" },
     { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
+    {name: 'new Post', icon: <FaPlus size={24} />, link: "newpost"},
     { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },
     { name: 'Profile', icon: <FaUser size={24} />, link: "profile"},
-    {name: 'new Post', icon: <FaPlus size={24} />, link: "newpost"}
+
   ];
 
   const handleClick=(name:string,link:string)=>{

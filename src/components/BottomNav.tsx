@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaHome, FaSearch, FaHeart, FaUser } from 'react-icons/fa';
+import { FaHome, FaSearch, FaHeart, FaUser, FaPlus } from "react-icons/fa";
 
 interface NavItemProps {
   icon: JSX.Element;
@@ -22,10 +22,11 @@ const NavItem = ({ icon, active, onClick }: NavItemProps) => {
 const BottomNav = () => {
   const [activeNav, setActiveNav] = useState<string>('Home');
   const navItems = [
-    { name: 'Home', icon: <FaHome size={24} /> },
-    { name: 'Search', icon: <FaSearch size={24} /> },
-    { name: 'Activity', icon: <FaHeart size={24} /> },
-    { name: 'Profile', icon: <FaUser size={24} /> },
+    { name: 'Home', icon: <FaHome size={24} />, link: "/" },
+    { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
+    {name: 'new Post', icon: <FaPlus size={24} />, link: "newpost"},
+    { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },
+    { name: 'Profile', icon: <FaUser size={24} />, link: "profile"},
   ];
 
   return (
