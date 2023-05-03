@@ -19,7 +19,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <title>Unleashed</title>
         <meta name="description" content="The social media Platform that lets you unleash your creativity" />
         <link rel="icon" href="/favicon.ico" />
-
+        <link rel="manifest" href="/manifest.json"/>
       </Head>
       <ClerkProvider {...pageProps}>
         <Component {...pageProps} />
