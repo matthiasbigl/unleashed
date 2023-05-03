@@ -10,6 +10,7 @@ import Image from "next/image"
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import { Props } from "next/script";
 import { classNames } from "@react-buddy/ide-toolbox/dist/util/classNames";
+import Link from "next/link";
 
 
 
@@ -59,8 +60,9 @@ export default function PostCard(props: PostWithImagesAndUser) {
   return (
     <div
       className="flex flex-col md:rounded-md md:border border-b border-neutral-800 bg-zinc-800/30 md:w-1/4  w-screen ">
-      <div className="flex flex-row items-center justify-center w-full h-12 px-4 md:my-2 ">
-        <h1 className="text-lg font-semibold">{props.user.username}</h1>
+      <div className="flex flex-row items-center justify-center w-full h-12 px-4 my-2">
+
+        <Link href={"/app/profile/"+props.user.username} className="text-lg font-semibold hover:underline">{props.user.username}</Link>
         <div
           className="flex flex-row items-center justify-end w-full h-full px-4 gap-x-4"
         >
@@ -72,7 +74,7 @@ export default function PostCard(props: PostWithImagesAndUser) {
       </div>
       {
         props.post.images ? (
-          <ImageCarousel images={props.post.images} />
+          <ImageCarousel images={props.post.images} caption={props.post.caption?props.post.caption:""} />
           )
           : null
       }

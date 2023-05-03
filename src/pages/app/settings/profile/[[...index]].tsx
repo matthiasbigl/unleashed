@@ -7,7 +7,7 @@ export default function UserProfilePage() {
   return (
     <AppLayout>
       <div className={"w-full h-full flex justify-center items-center p-5"}>
-        <UserProfile routing="path" path="/app/profile" />
+        <UserProfile routing="path" path="/app/settings/profile" />
       </div>
     </AppLayout>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import NextImage from "next/image";
@@ -8,14 +8,11 @@ import debounce from "lodash.debounce";
 
 type ImageCarouselProps = {
   images: ImageType[];
+  caption?: string;
 };
 
-type ImageDimension = {
-  width: number;
-  height: number;
-};
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -56,9 +53,19 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             >
               <NextImage
                 src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
-                alt={""}
+                alt={caption ? caption : ""}
+                placeholder="blur"
                 fill
-                className="object-contain object-center"
+                quality={30}
+                priority={index === currentIndex}
+                className="object-contain z-10 backdrop-blur-lg"
+              />
+              <NextImage
+                src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
+                alt={caption ? caption : ""}
+                fill
+                quality={1}
+                className="object-cover"
               />
             </div>
           ))}
@@ -67,7 +74,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         {
           images.length > 1 && (
             <>
-              <div className="hidden md:flex absolute top-0 bottom-0 left-0 flex justify-center">
+              <div className="hidden md:flex absolute top-0 bottom-0 left-0 flex justify-center z-10">
                 <button
                   className="w-6 h-6 ml-2 mt-auto mb-auto text-white bg-gray-500 rounded-full"
                   onClick={prevSlide}
@@ -75,7 +82,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                   <BsChevronCompactLeft className="w-3 h-3 m-auto" />
                 </button>
               </div>
-              <div className="hidden md:flex absolute top-0 bottom-0 right-0 flex justify-center">
+              <div className="hidden md:flex absolute top-0 bottom-0 right-0 flex justify-center z-10">
                 <button
                   className="w-6 h-6 mr-2 mt-auto mb-auto text-white bg-gray-500 rounded-full"
                   onClick={nextSlide}
@@ -84,7 +91,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                 </button>
               </div>
               <div
-                className="absolute bottom-0 left-0 right-0 flex items-center justify-center w-full h-12 bg-black bg-opacity-50">
+                className="absolute bottom-0 left-0 right-0 flex items-center justify-center w-full h-12 bg-black bg-opacity-50 z-10">
                 {images.map((_, index) => (
                   <button
                     key={index}

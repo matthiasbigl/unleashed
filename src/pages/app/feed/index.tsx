@@ -46,7 +46,7 @@ const Feed: NextPage = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col md:gap-4 w-full items-center mb-24">
+      <div className="flex flex-col md:gap-4 w-full items-center mb-24 ">
         <Suspense fallback={<div>Loading...</div>}>
           {data?.map((post,id) => (
             <PostCard key={id} {...post} />

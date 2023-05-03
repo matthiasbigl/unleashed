@@ -49,9 +49,45 @@ const addUserDataToPosts = async (posts: Post[]) => {
     };
   });
 };
+const getUserID = async (username: string) => {
+  const user = await clerkClient.users.getUserList({
+    username: [username],
+  })
+  if (user.length === 0) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: `User not found: ${username}`
+    });
+  }
+  return user[0]?.id;
+}
+
 
 
 export const postsRouter = createTRPCRouter({
+
+  getPostsByUsername: privateProcedure.input(z.object({ username: z.string() })).query(async ({ ctx, input }) => {
+    const userId = await getUserID(input.username);
+    const posts = await ctx.prisma.post.findMany({
+      where: {
+        userId
+      },
+      include: {
+        images: true,
+        likes: {
+          where: {
+            OR: [
+              {
+                userId: ctx.userId
+              },
+              {}
+            ]
+          }
+        }
+      }
+    });
+    return await addUserDataToPosts(posts);
+  }),
 
 
   getNext: privateProcedure.input(z.object({
