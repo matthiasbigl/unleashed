@@ -11,8 +11,6 @@ const server = z.object({
   AWS_SECRET_ACCESS_KEY: z.string(),
   BUCKET_NAME: z.string(),
   REGION: z.string(),
-  IMAGGA_API_KEY: z.string(),
-  IMAGGA_API_SECRET: z.string(),
 });
 
 /**
@@ -36,8 +34,6 @@ const processEnv = {
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   BUCKET_NAME: process.env.BUCKET_NAME,
   REGION: process.env.REGION,
-  IMAGGA_API_KEY: process.env.IMAGGA_API_KEY,
-  IMAGGA_API_SECRET: process.env.IMAGGA_API_SECRET,
 };
 
 // Don't touch the part below
