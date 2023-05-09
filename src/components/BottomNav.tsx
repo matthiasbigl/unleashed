@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaHome, FaSearch, FaHeart, FaUser, FaPlus } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface NavItemProps {
   icon: JSX.Element;
@@ -21,6 +22,9 @@ const NavItem = ({ icon, active, onClick }: NavItemProps) => {
 
 const BottomNav = () => {
   const [activeNav, setActiveNav] = useState<string>('Home');
+
+  const router = useRouter();
+
   const navItems = [
     { name: 'Home', icon: <FaHome size={24} />, link: "/" },
     { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
@@ -28,6 +32,11 @@ const BottomNav = () => {
     { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },
     { name: 'Profile', icon: <FaUser size={24} />, link: "profile"},
   ];
+
+  const handleClick=(name:string,link:string)=>{
+    setActiveNav(name)
+    router.push(link)
+  }
 
   return (
     <>
@@ -39,7 +48,7 @@ const BottomNav = () => {
             key={item.name}
             icon={item.icon}
             active={activeNav === item.name}
-            onClick={() => setActiveNav(item.name)}
+            onClick={() => handleClick(item.name, item.link)}
           />
         ))}
       </nav>

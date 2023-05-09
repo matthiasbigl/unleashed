@@ -38,7 +38,7 @@ export default function NewPost(): JSX.Element {
 
   const handlePost = async () => {
     //if there are no images, return
-    if (selectedImages.length === 0) {
+    if (selectedImages.length === 0&&caption.length===0) {
       return
     }
 
@@ -98,7 +98,7 @@ export default function NewPost(): JSX.Element {
   return (
     <AppLayout>
 
-      <div className="w-screen md:w-1/2 md:m-4 flex flex-col items-center md:rounded-md md:border border-neutral-800 bg-zinc-800/30 gap-4 p-5">
+      <div className="w-screen min-h-screen md:min-h-fit md:w-1/2 md:m-4 flex flex-col pt-40 md:p-4 items-center md:rounded-md md:border border-neutral-800 bg-zinc-800/30 gap-4 p-5">
         <h1 className="text-2xl font-semibold">New Post</h1>
         <div className="w-full">
           <div

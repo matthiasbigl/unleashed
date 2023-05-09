@@ -8,8 +8,7 @@ import { TRPCError } from "@trpc/server";
 import { clerkClient } from "@clerk/nextjs/api";
 import { Post } from ".prisma/client";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
-import { env } from "~/env.mjs";
-
+import axios from "axios";
 
 const addUserDataToPosts = async (posts: Post[]) => {
   const userId = posts.map((post) => post.userId);
@@ -51,8 +50,8 @@ const addUserDataToPosts = async (posts: Post[]) => {
 };
 const getUserID = async (username: string) => {
   const user = await clerkClient.users.getUserList({
-    username: [username],
-  })
+    username: [username]
+  });
   if (user.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
@@ -60,8 +59,7 @@ const getUserID = async (username: string) => {
     });
   }
   return user[0]?.id;
-}
-
+};
 
 
 export const postsRouter = createTRPCRouter({
@@ -142,6 +140,28 @@ export const postsRouter = createTRPCRouter({
     return await addUserDataToPosts(posts);
   }),
 
+  getPost: privateProcedure.input(z.object({ id: z.number() })).query(async ({ ctx, input }) => {
+    if (!input.id) throw new Error("No ID provided"
+    );
+
+    const post = await ctx.prisma.post.findUnique({
+      where: {
+        id: input.id
+      },
+      include: {
+        images: true,
+        likes: true
+      }
+    });
+    if (!post) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: `Post not found: ${input.id}`
+      });
+    }
+    return await addUserDataToPosts([post]).then((posts) => posts[0]);
+  }),
+
 
   like: privateProcedure
     .input(
@@ -215,9 +235,17 @@ export const postsRouter = createTRPCRouter({
       });
 
 
-
       const images = await Promise.all(
+
         input.images.map(async (image) => {
+          //classify the images using imagga
+
+          const labels = axios.get(`https://api.imagga.com/v2/tags?image_url=${`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image}`}`, {
+            headers: {
+
+            }
+          });
+
             const url = await ctx.prisma.image.create({
               data: {
                 url: image,
@@ -227,9 +255,12 @@ export const postsRouter = createTRPCRouter({
             return url;
           }
         )
+
       );
-      return{
+
+
+      return {
         post
-      }
+      };
     })
 });

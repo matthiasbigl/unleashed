@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { Image as ImageType, Like } from ".prisma/client";
 import { RouterOutputs } from "~/utils/api";
 import { BsChat, BsFillSendFill, BsHeart, BsHeartFill } from "react-icons/bs";
@@ -6,14 +6,11 @@ import { RxDotFilled } from "react-icons/rx";
 import ImageCarousel from "~/components/ImageCarousel";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import Image from "next/image"
+import Image from "next/image";
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import { Props } from "next/script";
 import { classNames } from "@react-buddy/ide-toolbox/dist/util/classNames";
 import Link from "next/link";
-
-
-
 
 
 type PostWithImagesAndUser = RouterOutputs["posts"]["getLatest"][number] & {
@@ -27,6 +24,8 @@ type PostWithImagesAndUser = RouterOutputs["posts"]["getLatest"][number] & {
 export default function PostCard(props: PostWithImagesAndUser) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+
+  const imageCarouselContainerRef = useRef<HTMLDivElement>(null);
 
   const user = useUser();
 
@@ -62,7 +61,8 @@ export default function PostCard(props: PostWithImagesAndUser) {
       className="flex flex-col md:rounded-md md:border border-b border-neutral-800 bg-zinc-800/30 md:w-1/4  w-screen ">
       <div className="flex flex-row items-center justify-center w-full h-12 px-4 my-2">
 
-        <Link href={"/app/profile/"+props.user.username} className="text-lg font-semibold hover:underline">{props.user.username}</Link>
+        <Link href={"/app/profile/" + props.user.username}
+              className="text-lg font-semibold hover:underline">{props.user.username}</Link>
         <div
           className="flex flex-row items-center justify-end w-full h-full px-4 gap-x-4"
         >
@@ -71,14 +71,40 @@ export default function PostCard(props: PostWithImagesAndUser) {
             width={40}
             height={40}
             className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 h-10"
-            src={props.user.profileImageUrl}  alt={props.user.username}/>
+            src={props.user.profileImageUrl} alt={props.user.username} />
         </div>
       </div>
       {
-        props.post.images ? (
-          <ImageCarousel images={props.post.images} caption={props.post.caption?props.post.caption:""} />
+        props.post.images &&
+        props.post.images.length > 0 ? (
+            <div
+            className="h-96"
+            ref={imageCarouselContainerRef}
+            >
+              <ImageCarousel images={props.post.images} caption={props.post.caption ? props.post.caption : ""}
+                             id={props.post.id} containerRef={imageCarouselContainerRef} />
+
+            </div>
           )
-          : null
+          : <>
+            <div className="w-full flex flex-col px-8 my-4">
+
+              <h1
+              className="text-2xl "
+              >
+                "{props.post.caption}"
+              </h1>
+              <div className="flex justify-end">
+                <span className="text-gray-500 text-sm font-semibold ">
+                  {
+                    //parse the sql date to a readable format
+                    new Date(props.post.createdAt).toLocaleDateString()
+                  }
+                </span>
+              </div>
+
+            </div>
+          </>
       }
       <div className="flex flex-row items-center justify-between px-4 py-2">
         <div className="flex flex-row items-center gap-x-4">
@@ -98,10 +124,16 @@ export default function PostCard(props: PostWithImagesAndUser) {
       </div>
       <div className="flex flex-col items-start justify-start px-4 py-2">
         <span className="text-gray-500 text-sm">{likeCount} likes</span>
-        <div className={`flex flex-row items-start justify-start gap-x-2`}>
-          <span className="text-gray-500 text-sm font-semibold  ">{props.user.username}</span>
-          <span className="text-gray-500 text-sm">{props.post.caption}</span>
-        </div>
+        {
+          props.post.images &&
+          props.post.images.length > 0 ? (
+            <div className={`flex flex-row items-start justify-start gap-x-2`}>
+              <span className="text-gray-500 text-sm font-semibold  ">{props.user.username}</span>
+              <span className="text-gray-500 text-sm">{props.post.caption}</span>
+            </div>
+          ) : null
+        }
+
       </div>
 
 

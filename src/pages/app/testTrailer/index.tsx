@@ -1,0 +1,9 @@
+import AppLayout from "~/pages/app/AppLayout";
+
+export default function Home() {
+  return (
+    <AppLayout>
+      <h1>Home</h1>
+    </AppLayout>
+  )
+}

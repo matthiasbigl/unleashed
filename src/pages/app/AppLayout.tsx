@@ -1,18 +1,24 @@
-import BottomNav from '~/components/BottomNav';
-import SideNav from '~/components/SideNav';
+import BottomNav from "~/components/BottomNav";
+import SideNav from "~/components/SideNav";
+import React, { RefObject, useEffect, useRef } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const AppLayout = ({ children }: LayoutProps) => {
+
+
   return (
     <>
-      <main className="flex flex-row items-center justify-center w-full h-full md:p-4">
-        <div className="hidden md:flex fixed left-0 top-0 h-full">
+
+      <main className="flex w-full h-full md:p-4
+      "
+      >
+        <div className="hidden md:flex fixed left-0 top-0 h-full z-50">
           <SideNav />
         </div>
-        <div className="w-full flex justify-center items-center ">
+        <div className="w-full mdflex justify-center items-center z-30">
           {children}
         </div>
       </main>

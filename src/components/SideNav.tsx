@@ -3,8 +3,9 @@ import { FaHome, FaSearch, FaHeart, FaUser, FaPlus } from "react-icons/fa";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { mockSession } from "next-auth/client/__tests__/helpers/mocks";
-import { useRouter } from "next/router";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 
 interface NavItemProps {
