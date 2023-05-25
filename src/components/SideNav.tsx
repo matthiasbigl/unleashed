@@ -50,7 +50,7 @@ const SideNav = () => {
 
 
   const navItems = [
-    { name: 'Home', icon: <FaHome size={24} />, link: "/" },
+    { name: 'Home', icon: <FaHome size={24} />, link: "/app" },
     { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
     {name: 'new Post', icon: <FaPlus size={24} />, link: "newpost"},
     { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },

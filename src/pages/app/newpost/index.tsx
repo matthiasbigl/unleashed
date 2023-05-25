@@ -106,7 +106,6 @@ export default function NewPost(): JSX.Element {
       flex-col
       items-center
       justify-center
-
       "
       >
         <div className="md:w-1/3 min-h-screen md:min-h-fit md:w-1/2 md:m-4 flex flex-col pt-40 md:p-4 items-center md:justify-center md:rounded-md md:border border-neutral-800 bg-zinc-800/30 gap-4 p-5">

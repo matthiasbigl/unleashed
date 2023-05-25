@@ -177,7 +177,7 @@ export const postsRouter = createTRPCRouter({
       });
     }
 
-    const comments = await Promise.all(post.comments.map(async (comment) => {
+    const comments = await Promise.all(post.comments.reverse().map(async (comment) => {
       console.log(comment);
       const user = await addUserData(comment.userId);
       return {
@@ -272,9 +272,12 @@ export const postsRouter = createTRPCRouter({
     });
 
     //get userName and profile picture of the user from clerk
+    const user = await addUserData(userId);
 
-
-    return comment;
+    return {
+      comment,
+      user
+    }
   }),
 
 

@@ -23,13 +23,10 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
   const postUser = postData.user;
   const postComments = postData.comments;
 
-  console.log(JSON.stringify(postData, null, 2));
-
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(postComments);
 
 
   const { mutate } = api.posts.like.useMutation({});
@@ -65,15 +62,18 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
 
   const handleCommentSubmit = () => {
     if (comment.length === 0) return;
-    const commentData = commentMutation.mutate({
+    //upload the comment get the response and add it to the comments array
+    const commentResponse = commentMutation.mutateAsync(
+      {
         postId: post.id,
         content: comment
       }
+    ).then((response) => {
+        setComments((prevComments) => [...prevComments, response]);
+        setComment("");
+      }
     );
-    setComment("");
-
   };
-
 
 
   const imageCarouselContainer = useRef<HTMLDivElement>(null);
@@ -113,7 +113,7 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
 
             <div className="w-1/3">
               {
-                postUser&&(
+                postUser && (
                   <Image
                     //a circle avatar
                     width={40}
@@ -145,15 +145,12 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
             <h2 className="text-xs text-neutral-200 ">{likeCount} likes</h2>
           </div>
 
-          <div className="flex flex-col items-center justify-center w-full  py-2 gap-2 ">
+          <div className="flex flex-col items-center justify-start w-full  py-2 gap-2 overflow-auto">
             {
-              postComments && postComments.map((comment, index) => (
+              comments && comments.map((comment, index) => (
                 <div
                   key={index}
                   className="flex flex-row items-center justify-start w-full  py-2 gap-2 border-b border-neutral-800 ">
-
-
-
                   {
                     comment.user && (
                       <Link href={"/app/profile/" + comment.user.username}
@@ -185,6 +182,15 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Add a comment..."
+              onKeyDown={
+                (e) => {
+                  if (e.key === "Enter") {
+                    handleCommentSubmit();
+                  }
+                }
+              }
+
+
             />
             <button className="focus:outline-none ml-auto "
                     type={"submit"}
@@ -242,7 +248,6 @@ export default function PostDetailed() {
     id: Number(postId)
   });
 
-  console.log(data);
 
   if ((isError || !data) && !isLoading) {
     return <ErrorMessage error={
