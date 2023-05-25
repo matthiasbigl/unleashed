@@ -48,6 +48,21 @@ const addUserDataToPosts = async (posts: Post[]) => {
     };
   });
 };
+
+const addUserData = async (userId: string) => {
+
+  const user = (
+    await clerkClient.users.getUserList({
+      userId: [userId],
+      limit: 1
+    })
+  ).map(filterUserForClient);
+
+  return user[0];
+
+};
+
+
 const getUserID = async (username: string) => {
   const user = await clerkClient.users.getUserList({
     username: [username]
@@ -85,6 +100,8 @@ export const postsRouter = createTRPCRouter({
       }
     });
     return await addUserDataToPosts(posts);
+
+
   }),
 
 
@@ -141,8 +158,7 @@ export const postsRouter = createTRPCRouter({
   }),
 
   getPost: privateProcedure.input(z.object({ id: z.number() })).query(async ({ ctx, input }) => {
-    if (!input.id) throw new Error("No ID provided"
-    );
+    if (!input.id) throw new Error("No ID provided");
 
     const post = await ctx.prisma.post.findUnique({
       where: {
@@ -150,7 +166,8 @@ export const postsRouter = createTRPCRouter({
       },
       include: {
         images: true,
-        likes: true
+        likes: true,
+        comments:true
       }
     });
     if (!post) {
@@ -159,7 +176,26 @@ export const postsRouter = createTRPCRouter({
         message: `Post not found: ${input.id}`
       });
     }
-    return await addUserDataToPosts([post]).then((posts) => posts[0]);
+
+    const comments = await Promise.all(post.comments.map(async (comment) => {
+      console.log(comment);
+      const user = await addUserData(comment.userId);
+      return {
+        comment,
+        user
+      };
+    }));
+
+
+    const user = await addUserData(post.userId);
+
+
+    return {
+      post,
+      user,
+      comments
+    };
+
   }),
 
 
@@ -221,6 +257,27 @@ export const postsRouter = createTRPCRouter({
       return like;
     }),
 
+
+  comment: privateProcedure.input(z.object({ postId: z.number(), content: z.string() })).mutation(async ({
+                                                                                                           ctx,
+                                                                                                           input
+                                                                                                         }) => {
+    const userId = ctx.userId;
+    const comment = await ctx.prisma.comment.create({
+      data: {
+        text: input.content,
+        userId,
+        postId: input.postId
+      }
+    });
+
+    //get userName and profile picture of the user from clerk
+
+
+    return comment;
+  }),
+
+
   create: privateProcedure
     .input(z.object({
       caption: z.string(),
@@ -233,18 +290,13 @@ export const postsRouter = createTRPCRouter({
           userId: ctx.userId
         }
       });
-
-
       const images = await Promise.all(
-
         input.images.map(async (image) => {
-          //classify the images using imagga
+            //classify the images using imagga
 
-          const labels = axios.get(`https://api.imagga.com/v2/tags?image_url=${`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image}`}`, {
-            headers: {
-
-            }
-          });
+            const labels = axios.get(`https://api.imagga.com/v2/tags?image_url=${`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image}`}`, {
+              headers: {}
+            });
 
             const url = await ctx.prisma.image.create({
               data: {
@@ -255,10 +307,7 @@ export const postsRouter = createTRPCRouter({
             return url;
           }
         )
-
       );
-
-
       return {
         post
       };

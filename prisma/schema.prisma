@@ -12,14 +12,15 @@ datasource db {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  likeCount Int      @default(0) @db.Int
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  published Boolean   @default(false)
+  likeCount Int       @default(0) @db.Int
   caption   String?
   images    Image[]
   likes     Like[]
+  comments  Comment[]
   userId    String
 
   @@index([userId])
@@ -33,6 +34,18 @@ model Image {
   post        Post     @relation(fields: [postId], references: [id])
   postId      Int
   aspectRatio Float    @default(1) @db.Float
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String
+  userId    String
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@index([userId])
 }
 
 model FollowConnection {

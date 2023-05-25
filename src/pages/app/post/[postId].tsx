@@ -7,20 +7,73 @@ import { Image as ImageType, Like } from ".prisma/client";
 import { User } from "next-auth";
 import Link from "next/link";
 import Image from "next/image";
+import { BsChat, BsHeart, BsHeartFill } from "react-icons/bs";
+import { useUser } from "@clerk/nextjs";
 
 ;
 
-type PostData = RouterOutputs["posts"]["getPost"] & {
-  post: {
-    images?: ImageType[];
-    likes?: Like[];
-  }
-}
+type PostData = RouterOutputs["posts"]["getPost"]
+
 
 const PostDetails = ({ props: postData }: { props: PostData }) => {
 
+  const user = useUser();
+
   const post = postData.post;
-  const user = postData.user;
+  const postUser = postData.user;
+  const postComments = postData.comments;
+
+  console.log(JSON.stringify(postData, null, 2));
+
+
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  const [comments, setComments] = useState([]);
+
+
+  const { mutate } = api.posts.like.useMutation({});
+  const commentMutation = api.posts.comment.useMutation({});
+
+  useEffect(() => {
+    //check if the user has liked this post
+    setLikeCount(post.likeCount);
+    if (post.likes) {
+      const hasLiked = post.likes.find((like) => like.userId === user.user?.id);
+      if (hasLiked) {
+        setIsLiked(true);
+      }
+    }
+
+    // @ts-ignore
+    postComments && setComments(postComments);
+
+  }, [user.user?.id]);
+
+
+  const handleLikeClick = () => {
+    if (user.isSignedIn)
+      setIsLiked(!isLiked);
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    mutate({
+      postId: post.id
+    });
+  };
+
+
+  const [comment, setComment] = useState("");
+
+  const handleCommentSubmit = () => {
+    if (comment.length === 0) return;
+    const commentData = commentMutation.mutate({
+        postId: post.id,
+        content: comment
+      }
+    );
+    setComment("");
+
+  };
+
 
 
   const imageCarouselContainer = useRef<HTMLDivElement>(null);
@@ -45,28 +98,103 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
                 images={post.images}
                 containerRef={imageCarouselContainer}
                 id={post.id}
-                qualtiy={100}
+                quality={20}
               />
             )
           }
         </div>
-        <div className="w-1/3 h-full flex flex-col justify-start items-center px-4 my-2">
-          <div className="flex flex-row items-center justify-center w-full h-12 px-4 my-2">
+        <div className="w-1/2 h-full flex flex-col justify-start items-center px-4 my-2 ">
+          <div
+            className="flex flex-row items-center justify-center w-full p-2 gap-2 border-b border-neutral-800 ">
 
-            <Link href={"/app/profile/" + user.username}
-                  className="text-lg font-semibold hover:underline">{user.username}</Link>
-            <div
-              className="flex flex-row items-center justify-end w-full h-full px-4 gap-x-4"
-            >
-              <Image
-                //a circle avatar
-                width={40}
-                height={40}
-                className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 h-10"
-                src={user.profileImageUrl} alt={user.username} />
+
+            <Link href={"/app/profile/" + postUser?.username}
+                  className="text-xl font-semibold hover:underline w-2/3 break-words">{postUser?.username}</Link>
+
+            <div className="w-1/3">
+              {
+                postUser&&(
+                  <Image
+                    //a circle avatar
+                    width={40}
+                    height={40}
+                    className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 aspect-square ml-auto "
+                    src={postUser.profileImageUrl}
+                    alt="profile image"
+                  />
+                )
+              }
+
             </div>
+
+
           </div>
-          <h2 className="text-xl font-semibold ">{post.caption}</h2>
+          <div className="flex flex-row items-center w-full  py-2 gap-2 ">
+            <h2 className="text-sm text-neutral-200 ">{post.caption}</h2>
+
+            <button className="focus:outline-none ml-auto " onClick={handleLikeClick}>
+              {isLiked ? (
+                <BsHeartFill className="text-red-500 text-2xl" />
+              ) : (
+                <BsHeart className="text-gray-500 text-2xl" />
+              )}
+            </button>
+
+          </div>
+          <div className="flex flex-row items-center w-full  pb-2 gap-2 border-b border-neutral-800 ">
+            <h2 className="text-xs text-neutral-200 ">{likeCount} likes</h2>
+          </div>
+
+          <div className="flex flex-col items-center justify-center w-full  py-2 gap-2 ">
+            {
+              postComments && postComments.map((comment, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row items-center justify-start w-full  py-2 gap-2 border-b border-neutral-800 ">
+
+
+
+                  {
+                    comment.user && (
+                      <Link href={"/app/profile/" + comment.user.username}
+                            className="flex items-center justify-start gap-2 "
+                      >
+                        <Image
+                          //a circle avatar
+                          width={40}
+                          height={40}
+                          className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 aspect-square  "
+                          src={comment.user.profileImageUrl} alt="" />
+                        <h2 className="text-sm font-semibold text-neutral-200 hover:underline">{comment.user.username}</h2>
+                      </Link>
+                    )
+                  }
+
+                  <h2 className="text-sm text-neutral-200 ">{comment.comment.text}</h2>
+                </div>
+              ))
+            }
+          </div>
+
+
+          <div className="flex flex-row mt-auto justify-start w-full  py-2 gap-2"
+          >
+            <input
+              className="w-full bg-zinc-800/30 rounded-md p-2 text-neutral-200 focus:outline-none"
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Add a comment..."
+            />
+            <button className="focus:outline-none ml-auto "
+                    type={"submit"}
+                    onClick={handleCommentSubmit}
+            >
+              <BsChat className="text-gray-500 text-2xl" />
+            </button>
+
+          </div>
+
 
         </div>
       </div>
@@ -113,6 +241,8 @@ export default function PostDetailed() {
   const { data, isError, error, isLoading } = api.posts.getPost.useQuery({
     id: Number(postId)
   });
+
+  console.log(data);
 
   if ((isError || !data) && !isLoading) {
     return <ErrorMessage error={

@@ -71,6 +71,7 @@ export default function PostCard(props: PostWithImagesAndUser) {
             width={40}
             height={40}
             className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 h-10"
+            quality={1}
             src={props.user.profileImageUrl} alt={props.user.username} />
         </div>
       </div>
@@ -82,7 +83,9 @@ export default function PostCard(props: PostWithImagesAndUser) {
             ref={imageCarouselContainerRef}
             >
               <ImageCarousel images={props.post.images} caption={props.post.caption ? props.post.caption : ""}
-                             id={props.post.id} containerRef={imageCarouselContainerRef} />
+                             id={props.post.id} containerRef={imageCarouselContainerRef}
+                             quality={1}
+              />
 
             </div>
           )

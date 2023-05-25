@@ -13,17 +13,17 @@ type ImageCarouselProps = {
   id: number;
   containerRef: React.RefObject<HTMLDivElement>
 
-  qualtiy?: number;
+  quality?: number;
 
 
 };
 
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, containerRef ,qualtiy}) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, containerRef ,quality}) => {
 
   if (!images) return null;
 
-  if (qualtiy === undefined) qualtiy = 20;
+  if (quality === undefined) quality = 10;
 
   const dragableRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +85,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, cont
             src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
             alt={caption ? caption : ""}
             fill
-            quality={qualtiy}
+            quality={quality}
             priority={index === currentIndex}
             className="object-contain z-10 backdrop-blur-2xl shadow-2xl"
           />
