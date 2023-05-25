@@ -52,9 +52,9 @@ const SideNav = () => {
   const navItems = [
     { name: 'Home', icon: <FaHome size={24} />, link: "/app" },
     { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
-    {name: 'new Post', icon: <FaPlus size={24} />, link: "newpost"},
+    {name: 'new Post', icon: <FaPlus size={24} />, link: "/app/newpost"},
     { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },
-    { name: 'Profile', icon: <FaUser size={24} />, link: "profile"},
+    { name: 'Profile', icon: <FaUser size={24} />, link: "/app/settings/profile"},
 
   ];
 
@@ -101,7 +101,7 @@ const SideNav = () => {
             <div className="hidden md:flex  flex-col items-center justify-end my-4 gap-4">
               <Link className="flex flex-row items-center-center gap-2 text-lg py-1 px-2  rounded-md
                   hover:scale-105 hover:shadow-lg hover:bg-zinc-800/50 transition duration-150 ease-in-out"
-                    href={"/app/profile"}>
+                    href={"/app/settings/profile"}>
 
                 <h2 className="my-auto">
                   {user.user.fullName}

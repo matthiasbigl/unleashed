@@ -34,6 +34,11 @@ export default function NewPost(): JSX.Element {
 
   const dropzoneOptions: DropzoneOptions = {
     onDropAccepted: handleImageSelection,
+    accept:{
+      "image/png": ["png"],
+      "image/jpeg": ["jpg", "jpeg"],
+      "image/gif": ["gif"],
+    },
   };
 
   const handlePost = async () => {
