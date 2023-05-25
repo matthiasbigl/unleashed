@@ -118,9 +118,11 @@ export default function PostCard(props: PostWithImagesAndUser) {
               <BsHeart className="text-gray-500 text-2xl" />
             )}
           </button>
-          <button className="focus:outline-none">
+          <Link className="focus:outline-none" href={
+            "/app/post/" + props.post.id
+          }>
             <BsChat className="text-gray-500 text-2xl" />
-          </button>
+          </Link>
 
         </div>
 
