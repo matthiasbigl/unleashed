@@ -154,7 +154,7 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
               comments && comments.map((comment, index) => (
                 <div
                   key={index}
-                  className="flex flex-col items-start justify-center w-full  py-2 gap-2 border-b border-neutral-800 ">
+                  className="flex flex-col items-start justify-center w-full  py-1 gapx-2 border-b border-neutral-800 ">
                   {
                     comment.user && (
                       <Link href={"/app/profile/" + comment.user.username}
@@ -164,14 +164,15 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
                           //a circle avatar
                           width={40}
                           height={40}
-                          className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 aspect-square  "
+                          className="rounded-full border border-neutral-800 bg-zinc-800/30 w-5 aspect-square  "
                           src={comment.user.profileImageUrl} alt="" />
                         <h2 className="text-sm font-semibold text-neutral-200 hover:underline">{comment.user.username}</h2>
+
                       </Link>
                     )
                   }
 
-                  <h2 className="text-sm text-neutral-200 ml-12">{comment.comment.text}</h2>
+                  <h2 className="text-sm text-neutral-200 ml-7">{comment.comment.text}</h2>
                 </div>
               ))
             }
