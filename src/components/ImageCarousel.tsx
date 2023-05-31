@@ -25,7 +25,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, cont
 
   if (quality === undefined) quality = 10;
 
-  const dragableRef = useRef<HTMLDivElement>(null);
+  const draggableRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 //get the height of the container
@@ -53,9 +53,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, cont
   };
 
   const handlers = useSwipeable({
-    onSwipedRight: debounce(prevSlide, 300),
-    onSwipedLeft: debounce(nextSlide, 300),
+   onSwipedRight: debounce(() => prevSlide(), 100),
+    onSwipedLeft: debounce(() => nextSlide(), 100),
     trackMouse: true
+
   });
 
   const goToSlide = (slideIndex: number) => {
@@ -67,36 +68,39 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, cont
 
     <div {...handlers}
       //set the height of the container
-      className={`relative overflow-hidden`}
+      className={`relative overflow-hidden z-50`}
          style={{ height: `${height}px` }}
-         ref={dragableRef}>
-
-      {images.map((image, index) => (
-
-        <Link
-          href={`/app/post/${id}`}
-          key={image.id}
-          className={`absolute top-0 left-0 w-full h-full transition-opacity duration-150 ${
-            index === currentIndex ? "opacity-100" : "opacity-0"
-          }`}
         >
 
-          <NextImage
-            src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
-            alt={caption ? caption : ""}
-            fill
-            quality={quality}
-            priority={index === currentIndex}
-            className="object-contain z-10 backdrop-blur-2xl shadow-2xl"
-          />
-          <NextImage
-            src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
-            alt={caption ? caption : ""}
-            fill
-            quality={1}
-            className="object-cover"
-          />
-        </Link>
+      {images.map((image, index) => (
+        <div
+        ref={draggableRef}
+        >
+          <Link
+            href={`/app/post/${id}`}
+            key={image.id}
+            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-150 ${
+              index === currentIndex ? "opacity-100" : "opacity-0"
+            }`}
+          >
+
+            <NextImage
+              src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
+              alt={caption ? caption : ""}
+              fill
+              quality={quality}
+              priority={index === currentIndex}
+              className="object-contain z-10 backdrop-blur-2xl shadow-2xl"
+            />
+            <NextImage
+              src={`https://unleashed-images.s3.eu-central-1.amazonaws.com/${image.url}`}
+              alt={caption ? caption : ""}
+              fill
+              quality={1}
+              className="object-cover"
+            />
+          </Link>
+        </div>
       ))}
 
 
