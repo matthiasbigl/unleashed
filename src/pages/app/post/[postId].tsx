@@ -81,14 +81,14 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen w-full "
+      className="flex md:justify-center md:items-center min-h-screen w-full "
     >
       <div
-        className="border-neutral-800 border bg-zinc-800/30 w-2/3 aspect-video flex rounded-lg p-2"
+        className="border-neutral-800 w-full md:border bg-zinc-800/30 md:w-2/3 aspect-video flex flex-col md:flex-row md:rounded-lg md:p-2 "
       >
         <div
           className={
-            "w-2/3 h-full bg-green-500 rounded-l-md overflow-hidden relative"
+            "md:w-2/3 h-full md:rounded-l-md overflow-hidden relative"
           }
           ref={imageCarouselContainer}
         >
@@ -103,45 +103,49 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
             )
           }
         </div>
-        <div className="w-1/2 h-full flex flex-col justify-start items-center px-4 my-2 ">
+        <div className="md:w-1/2 h-full flex flex-col justify-start items-center px-4 my-2 ">
+
           <div
             className="flex flex-row items-center justify-center w-full p-2 gap-2 border-b border-neutral-800 ">
 
 
-            <Link href={"/app/profile/" + postUser?.username}
-                  className="text-xl font-semibold hover:underline w-2/3 break-words">{postUser?.username}</Link>
 
-            <div className="w-1/3">
+
+            <div
+            className="flex gap-x-2 w-full items-center justify-start"
+            >
+              <Link href={"/app/profile/" + postUser?.username}
+                    className="text-xl font-semibold hover:underline  break-words">{postUser?.username}</Link>
               {
                 postUser && (
                   <Image
                     //a circle avatar
-                    width={40}
-                    height={40}
-                    className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 aspect-square ml-auto "
+                    width={20}
+                    height={20}
+                    className="rounded-full border border-neutral-800 bg-zinc-800/30 w-8 aspect-square "
                     src={postUser.profileImageUrl}
                     alt="profile image"
                   />
                 )
               }
+              <div className="flex flex-row items-center gap-x-4 ml-auto">
+                <button className="focus:outline-none" onClick={handleLikeClick}>
+                  {isLiked ? (
+                    <BsHeartFill className="text-red-500 text-2xl" />
+                  ) : (
+                    <BsHeart className="text-gray-500 text-2xl" />
+                  )}
+                </button>
+              </div>
+
 
             </div>
 
 
           </div>
-          <div className="flex flex-row items-center w-full  py-2 gap-2 ">
-            <h2 className="text-sm text-neutral-200 ">{post.caption}</h2>
 
-            <button className="focus:outline-none ml-auto " onClick={handleLikeClick}>
-              {isLiked ? (
-                <BsHeartFill className="text-red-500 text-2xl" />
-              ) : (
-                <BsHeart className="text-gray-500 text-2xl" />
-              )}
-            </button>
-
-          </div>
-          <div className="flex flex-row items-center w-full  pb-2 gap-2 border-b border-neutral-800 ">
+          <div className="flex flex-row items-center w-full  py-2 gap-2 border-b border-neutral-800  ">
+            <h2 className="text-sm font-semibold text-neutral-200 ">{post.caption}</h2>
             <h2 className="text-xs text-neutral-200 ">{likeCount} likes</h2>
           </div>
 
@@ -150,7 +154,7 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
               comments && comments.map((comment, index) => (
                 <div
                   key={index}
-                  className="flex flex-row items-center justify-start w-full  py-2 gap-2 border-b border-neutral-800 ">
+                  className="flex flex-col items-start justify-center w-full  py-2 gap-2 border-b border-neutral-800 ">
                   {
                     comment.user && (
                       <Link href={"/app/profile/" + comment.user.username}
@@ -167,7 +171,7 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
                     )
                   }
 
-                  <h2 className="text-sm text-neutral-200 ">{comment.comment.text}</h2>
+                  <h2 className="text-sm text-neutral-200 ml-12">{comment.comment.text}</h2>
                 </div>
               ))
             }

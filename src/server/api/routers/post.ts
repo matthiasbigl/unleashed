@@ -79,6 +79,32 @@ const getUserID = async (username: string) => {
 
 export const postsRouter = createTRPCRouter({
 
+
+  getMyPosts: privateProcedure.query(async ({ ctx }) => {
+    const posts = await ctx.prisma.post.findMany({
+      where: {
+        userId: ctx.userId
+      },
+      include: {
+        images: true,
+        likes: {
+          where: {
+            OR: [
+              {
+                userId: ctx.userId
+              },
+              {
+
+              }
+            ]
+          }
+        }
+      }
+    });
+    return await addUserDataToPosts(posts);
+  }
+  ),
+
   getPostsByUsername: privateProcedure.input(z.object({ username: z.string() })).query(async ({ ctx, input }) => {
     const userId = await getUserID(input.username);
     const posts = await ctx.prisma.post.findMany({

@@ -58,7 +58,7 @@ export default function PostCard(props: PostWithImagesAndUser) {
 
   return (
     <div
-      className="flex flex-col md:rounded-md md:border border-b border-neutral-800 bg-zinc-800/30 md:w-1/4  w-screen ">
+      className="flex flex-col md:rounded-md md:border border-b border-neutral-800 bg-zinc-800/30 md:w-1/2  w-screen ">
       <div className="flex flex-row items-center justify-center w-full h-12 px-4 my-2">
 
         <Link href={"/app/profile/" + props.user.username}

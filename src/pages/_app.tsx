@@ -9,6 +9,8 @@ import "~/styles/globals.scss";
 import { ClerkProvider } from "@clerk/nextjs";
 import Head from "next/head";
 
+import "@uploadthing/react/styles.css";
+
 const MyApp: AppType<{ session: Session | null }> = ({
                                                        Component,
                                                        pageProps: { session, ...pageProps }

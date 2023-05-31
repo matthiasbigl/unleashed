@@ -54,7 +54,7 @@ const SideNav = () => {
     { name: 'Search', icon: <FaSearch size={24}/>, link: "search" },
     {name: 'new Post', icon: <FaPlus size={24} />, link: "/app/newpost"},
     { name: 'Activity', icon: <FaHeart size={24} />, link: "activity" },
-    { name: 'Profile', icon: <FaUser size={24} />, link: "/app/settings/profile"},
+    { name: 'Profile', icon: <FaUser size={24} />, link: "/app/profile/me"},
 
   ];
 
@@ -64,7 +64,8 @@ const SideNav = () => {
   }
 
   return (
-    <div className=" border-r border-gray-700 w-64 flex flex-col h-full  bg-gradient-to-b bg-zinc-800/30 z-20 gap-y-4">
+    <div className=" border-r border-gray-700 w-64
+    flex flex-col h-full  bg-gradient-to-b bg-zinc-800/30 z-20 gap-y-4">
       <div className="h-24 flex items-center justify-center text-2xl font-bold text-white border-b border-neutral-800">
         <Link
         href={"/"}

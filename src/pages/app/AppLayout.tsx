@@ -18,7 +18,7 @@ const AppLayout = ({ children }: LayoutProps) => {
         <div className="hidden md:flex fixed left-0 top-0 h-full z-50">
           <SideNav />
         </div>
-        <div className="w-full mdflex justify-center items-center z-30">
+        <div className="w-full md:flex md:mx-64 justify-center items-center z-30">
           {children}
         </div>
       </main>
