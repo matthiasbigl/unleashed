@@ -20,6 +20,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Head>
         <title>Unleashed</title>
         <meta name="description" content="The social media Platform that lets you unleash your creativity" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="google-site-verification" content="AE4xTqjFEokU4TUV2f-qhOq_IDtXIsxOrGTKe15HNO4" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json"/>
       </Head>
