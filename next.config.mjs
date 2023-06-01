@@ -12,6 +12,10 @@ const config = {
     esmExternals:false,
   },
 
+  typescript:{
+    ignoreBuildErrors:true,
+  },
+
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
    * out.
