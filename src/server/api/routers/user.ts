@@ -104,6 +104,13 @@ export const userRouter = createTRPCRouter({
 
     const userID = await getUserID(input.username);
 
+    if (!userID) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: `User not found: ${input.username}`
+      });
+    }
+
 
     const followersIDs = await prisma.followConnection.findMany({
         where: {

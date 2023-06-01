@@ -40,7 +40,7 @@ const BottomNav = () => {
 
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex justify-between border-t border-gray-700 border-t
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-10 flex justify-between border-t border-gray-700 border-t
        bg-black py-4 ">
 
         {navItems.map((item) => (

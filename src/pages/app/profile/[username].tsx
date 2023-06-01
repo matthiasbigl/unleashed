@@ -9,6 +9,7 @@ import Image from "next/image";
 
 type Post = RouterOutputs["posts"]["getMyPosts"] & {
   images?: ImageType[];
+
 }
 
 
@@ -23,7 +24,6 @@ export default function UserProfilePage() {
 
 
   const { data: posts, isLoading:postsLoading, isError:getPostsError } = api.posts.getPostsByUsername.useQuery({ username: username as string});
-
 
   const {
     data: userInfo,
@@ -48,7 +48,7 @@ export default function UserProfilePage() {
     <AppLayout>
       <div className="flex flex-col md:gap-4 w-full items-center mb-24 px-5 md:px-0 ">
         {postsLoading && (
-          <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
+          <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-10">
             <h1 className="text-6xl font-bold">
               Loading
               <span className="animate-pulse inline-flex h-3 w-3 rounded-full bg-white ml-2"></span>
@@ -66,29 +66,35 @@ export default function UserProfilePage() {
         >
           {
             userInfo?.user?.profileImageUrl && (
-              <div className={
-                " flex flex-col md:flex-row md:items-center  gap-2"
-              }>
-                <Image
-                  //a circle avatar
-                  width={40}
-                  height={40}
-                  className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 aspect-square  "
-                  src={userInfo.user.profileImageUrl} alt="" />
-                <h1 className="text-lg font-semibold text-neutral-200 hover:underline">{userInfo.user.username}</h1>
-                <button
-                  className={
-                    "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold mx-4 md:mx-0"
-                  }
-                >
-                  Follow
-                </button>
 
-              </div>
+              <>
+
+                <div className={
+                  " flex flex-col gap-y-2"
+                }>
+                  <Image
+                    //a circle avatar
+                    width={50}
+                    height={50}
+                    className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 md:w-20 aspect-square  "
+                    src={userInfo.user.profileImageUrl} alt="" />
+                  <h1 className="text-md font-semibold text-neutral-200 hover:underline">{userInfo.user.username}</h1>
+                  <button
+                    className={
+                      "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold md:mx-0 text-md "
+                    }
+                  >
+                    Follow
+                  </button>
+
+                </div>
+              </>
+
             )
           }
           <div
-          className="ml-auto flex flex-row gap-4 items-center"
+          className="ml-auto flex flex-row gap-4 items-center
+          "
           >
 
 
@@ -97,24 +103,24 @@ export default function UserProfilePage() {
               "flex flex-col gap-1 items-center"
             }
             >
-              <h1 className="text-lg font-semibold text-neutral-200">{posts?.length}</h1>
-              <h1 className="text-sm font-semibold text-neutral-400">Posts</h1>
+              <h1 className="text-sm font-semibold text-neutral-200">{posts?.length}</h1>
+              <h1 className="text-xs font-semibold text-neutral-400">Posts</h1>
             </div>
             <div
             className={
               "flex flex-col gap-1 items-center"
             }
             >
-              <h1 className="text-lg font-semibold text-neutral-200">{userInfo?userInfo?.followers?.length:0}</h1>
-              <h1 className="text-sm font-semibold text-neutral-400">Followers</h1>
+              <h1 className="text-sm font-semibold text-neutral-200">{userInfo?userInfo?.followers?.length:0}</h1>
+              <h1 className="text-xs font-semibold text-neutral-400">Followers</h1>
           </div>
           <div
           className={
             "flex flex-col gap-1 items-center"
           }
           >
-            <h1 className="text-lg font-semibold text-neutral-200">{userInfo?userInfo?.following?.length:0}</h1>
-            <h1 className="text-sm font-semibold text-neutral-400">Following</h1>
+            <h1 className="text-sm font-semibold text-neutral-200">{userInfo?userInfo?.following?.length:0}</h1>
+            <h1 className="text-xs font-semibold text-neutral-400">Following</h1>
 
           </div>
 

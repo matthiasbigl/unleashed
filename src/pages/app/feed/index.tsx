@@ -12,7 +12,7 @@ const Feed: NextPage = () => {
   if (!user.isSignedIn&&user.isLoaded) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex flex-col justify-center items-center gap-6 text-center z-50 ">
+        <div className="min-h-screen flex flex-col justify-center items-center gap-6 text-center z-10 ">
           <h1 className="text-6xl font-bold">
             It looks like you're not signed in
           </h1>
@@ -32,7 +32,7 @@ const Feed: NextPage = () => {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
+        <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-10">
           <h1 className="text-6xl font-bold">
             Loading
             <span className="animate-pulse inline-flex h-3 w-3 rounded-full bg-white ml-2"></span>

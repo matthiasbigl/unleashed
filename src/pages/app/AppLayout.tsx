@@ -15,7 +15,7 @@ const AppLayout = ({ children }: LayoutProps) => {
       <main className="flex w-full h-full md:p-4
       "
       >
-        <div className="hidden md:flex fixed left-0 top-0 h-full z-50">
+        <div className="hidden md:flex fixed left-0 top-0 h-full z-10">
           <MemoizedSideNav />
 
         </div>
@@ -23,7 +23,7 @@ const AppLayout = ({ children }: LayoutProps) => {
           {children}
         </div>
       </main>
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-10">
         <BottomNav />
       </div>
 
