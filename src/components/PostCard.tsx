@@ -84,7 +84,7 @@ export default function PostCard(props: PostWithImagesAndUser) {
             >
               <ImageCarousel images={props.post.images} caption={props.post.caption ? props.post.caption : ""}
                              id={props.post.id} containerRef={imageCarouselContainerRef}
-                             quality={1}
+                             quality={30}
               />
 
             </div>

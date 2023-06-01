@@ -1,27 +1,53 @@
 import AppLayout from "~/pages/app/AppLayout";
-import { useRouter } from 'next/router'
-import { api } from "~/utils/api";
-import PostCard from "~/components/PostCard";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { api, RouterOutputs } from "~/utils/api";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import { Image as ImageType } from ".prisma/client";
+import ImageCarousel from "~/components/ImageCarousel";
+import Link from "next/link";
+import Image from "next/image";
+
+type Post = RouterOutputs["posts"]["getMyPosts"] & {
+  images?: ImageType[];
+}
+
 
 export default function UserProfilePage() {
 
-  const router = useRouter()
+  const router = useRouter();
+
 
   const { username } = router.query;
 
-  const { data: posts, isLoading, isError } = api.posts.getPostsByUsername.useQuery({ username: username as string});
+
+
+
+  const { data: posts, isLoading:postsLoading, isError:getPostsError } = api.posts.getPostsByUsername.useQuery({ username: username as string});
+
+
+  const {
+    data: userInfo,
+    isError: userInfoError,
+    isLoading: loadingUserInfo
+  } = api.user.getUserInfo.useQuery(
+    {
+      username: username as string
+    }
+  );
+  console.log(userInfo);
+
+  const imageCarouselRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
-    if (isError) {
-      router.push("/404")
+    if (getPostsError) {
+      router.push("/404");
     }
-  }, [isError])
+  }, [getPostsError]);
 
   return (
     <AppLayout>
-      <div className="flex flex-col md:gap-4 w-full items-center mb-24 ">
-        {isLoading && (
+      <div className="flex flex-col md:gap-4 w-full items-center mb-24 px-5 md:px-0 ">
+        {postsLoading && (
           <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6 text-center z-50">
             <h1 className="text-6xl font-bold">
               Loading
@@ -32,10 +58,102 @@ export default function UserProfilePage() {
             </h1>
           </div>
         )}
-        {posts?.map((post,id) => (
-          <PostCard key={id} {...post} />
-        ))}
+
+        <div
+        className={
+          "w-full flex  items-center gap-4 p-2 my-4 border-b border-neutral-800 "
+        }
+        >
+          {
+            userInfo?.user?.profileImageUrl && (
+              <div className={
+                " flex flex-col md:flex-row md:items-center  gap-2"
+              }>
+                <Image
+                  //a circle avatar
+                  width={40}
+                  height={40}
+                  className="rounded-full border border-neutral-800 bg-zinc-800/30 w-10 aspect-square  "
+                  src={userInfo.user.profileImageUrl} alt="" />
+                <h1 className="text-lg font-semibold text-neutral-200 hover:underline">{userInfo.user.username}</h1>
+                <button
+                  className={
+                    "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold mx-4 md:mx-0"
+                  }
+                >
+                  Follow
+                </button>
+
+              </div>
+            )
+          }
+          <div
+          className="ml-auto flex flex-row gap-4 items-center"
+          >
+
+
+            <div
+            className={
+              "flex flex-col gap-1 items-center"
+            }
+            >
+              <h1 className="text-lg font-semibold text-neutral-200">{posts?.length}</h1>
+              <h1 className="text-sm font-semibold text-neutral-400">Posts</h1>
+            </div>
+            <div
+            className={
+              "flex flex-col gap-1 items-center"
+            }
+            >
+              <h1 className="text-lg font-semibold text-neutral-200">{userInfo?userInfo?.followers?.length:0}</h1>
+              <h1 className="text-sm font-semibold text-neutral-400">Followers</h1>
+          </div>
+          <div
+          className={
+            "flex flex-col gap-1 items-center"
+          }
+          >
+            <h1 className="text-lg font-semibold text-neutral-200">{userInfo?userInfo?.following?.length:0}</h1>
+            <h1 className="text-sm font-semibold text-neutral-400">Following</h1>
+
+          </div>
+
+        </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 w-full ">
+          {posts?.map((post) => {
+              if (post.post.images?.length < 1) {
+                return;
+              }
+              return (
+                <div
+                  key={post.post.id}
+                  className="w-full aspect-square bg-gray-200 rounded-lg overflow-hidden"
+                  ref={
+                    imageCarouselRef
+                  }
+                >
+                  <ImageCarousel
+                    images={
+                      post.post.images
+                    }
+                    containerRef={
+                      imageCarouselRef
+                    }
+                    id={
+                      post.post.id
+                    }
+                  />
+
+                </div>
+              );
+
+            }
+          )}
+        </div>
       </div>
+
     </AppLayout>
   );
 }

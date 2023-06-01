@@ -98,7 +98,7 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
                 images={post.images}
                 containerRef={imageCarouselContainer}
                 id={post.id}
-                quality={20}
+                quality={100}
               />
             )
           }
@@ -194,9 +194,8 @@ const PostDetails = ({ props: postData }: { props: PostData }) => {
                   }
                 }
               }
-
-
             />
+
             <button className="focus:outline-none ml-auto "
                     type={"submit"}
                     onClick={handleCommentSubmit}

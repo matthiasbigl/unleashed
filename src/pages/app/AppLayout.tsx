@@ -16,7 +16,8 @@ const AppLayout = ({ children }: LayoutProps) => {
       "
       >
         <div className="hidden md:flex fixed left-0 top-0 h-full z-50">
-          <SideNav />
+          <MemoizedSideNav />
+
         </div>
         <div className="w-full md:flex md:mx-64 justify-center items-center z-30">
           {children}
@@ -29,5 +30,8 @@ const AppLayout = ({ children }: LayoutProps) => {
     </>
   );
 };
+
+
+const MemoizedSideNav = React.memo(SideNav);
 
 export default AppLayout;

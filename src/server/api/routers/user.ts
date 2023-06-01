@@ -50,10 +50,15 @@ const addUserDataToPosts = async (posts: Post[]) => {
   });
 };
 
+const getUsername = async (userId: string) => {
+  const user = await clerkClient.users.getUser(userId);
+  return user.username;
+};
+
 const getUserID = async (username: string) => {
   const user = await clerkClient.users.getUserList({
-    username: [username],
-  })
+    username: [username]
+  });
   if (user.length === 0) {
     throw new TRPCError({
       code: "NOT_FOUND",
@@ -61,7 +66,7 @@ const getUserID = async (username: string) => {
     });
   }
   return user[0]?.id;
-}
+};
 
 
 export const userRouter = createTRPCRouter({
@@ -70,13 +75,13 @@ export const userRouter = createTRPCRouter({
   getPosts: privateProcedure.input(z.object({ username: z.string() })).query(async ({ ctx, input }) => {
 
     const { username } = input;
-    const userId = await getUserID(username)
-    console.log("userId", userId)
+    const userId = await getUserID(username);
+    console.log("userId", userId);
     const posts = await prisma.post.findMany({
-      where: {
-        userId: userId
+        where: {
+          userId: userId
+        }
       }
-    }
     );
     return addUserDataToPosts(posts);
 
@@ -92,7 +97,83 @@ export const userRouter = createTRPCRouter({
       }
     });
     return posts;
+  }),
+
+  getUserInfo: privateProcedure.input(z.object({ username: z.string() })).query(async ({ ctx, input }) => {
+
+
+    const userID = await getUserID(input.username);
+
+
+    const followersIDs = await prisma.followConnection.findMany({
+        where: {
+          followingId: userID
+        }
+      }
+    ).then((res) => res.map((item) => item.followerId));
+
+    const followingIDs = await prisma.followConnection.findMany({
+        where: {
+          followerId: userID
+        }
+      }
+    ).then((res) => res.map((item) => item.followingId));
+
+
+    const following = async () => {
+      if (followersIDs.length > 0) {
+        const following = await clerkClient.users.getUserList({
+          userId: followersIDs
+        });
+        return following.map(filterUserForClient);
+      }
+      return [];
+
+    };
+
+    const followers = async () => {
+      if (followingIDs.length > 0) {
+        const followers = await clerkClient.users.getUserList({
+          userId: followingIDs
+        });
+        return followers.map(filterUserForClient);
+      }
+      return [];
+
+    };
+
+    const user = await clerkClient.users.getUser(userID);
+
+    return {
+      user: filterUserForClient(user),
+      followers: await followers(),
+      following: await following()
+    };
+
+  }),
+
+
+  getSocialConnections: privateProcedure.input(z.object({ userId: z.string() })).query(async ({ ctx }) => {
+    const followers = await prisma.followConnection.findMany({
+        where: {
+          followingId: ctx.userId
+        }
+      }
+    ).then((res) => res.map((item) => item.followerId));
+
+    const following = await prisma.followConnection.findMany({
+        where: {
+          followerId: ctx.userId
+        }
+      }
+    ).then((res) => res.map((item) => item.followingId));
+    return {
+      followers,
+      following
+    };
   })
+
+  //get all likes of a user
 
 
 });

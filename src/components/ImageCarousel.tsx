@@ -19,23 +19,27 @@ type ImageCarouselProps = {
 };
 
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, containerRef ,quality}) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, containerRef, quality }) => {
 
   if (!images) return null;
 
   if (quality === undefined) quality = 10;
+
+
 
   const draggableRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 //get the height of the container
   const [height, setHeight] = useState(0);
+
   useEffect(() => {
+
       if (containerRef.current) {
         setHeight(containerRef.current.clientHeight);
       }
-    }
-    , [containerRef.current]);
+
+    }, [containerRef.current]);
 
 
   const prevSlide = () => {
@@ -53,7 +57,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, cont
   };
 
   const handlers = useSwipeable({
-   onSwipedRight: debounce(() => prevSlide(), 100),
+    onSwipedRight: debounce(() => prevSlide(), 100),
     onSwipedLeft: debounce(() => nextSlide(), 100),
     trackMouse: true
 
@@ -68,13 +72,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, caption, id, cont
 
     <div {...handlers}
       //set the height of the container
-      className={`relative overflow-hidden z-50`}
+         className={`relative overflow-hidden z-50`}
          style={{ height: `${height}px` }}
-        >
+    >
 
-      {images.map((image, index) => (
+      {images.map((image,index) => (
         <div
-        ref={draggableRef}
+          key={image.id}
+          ref={draggableRef}
         >
           <Link
             href={`/app/post/${id}`}
