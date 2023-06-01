@@ -18,7 +18,7 @@ const PostModal: React.FC<PostModalProps> = ({ closeModal, id }) => {
   });
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="fixed inset-0 flex items-center justify-center z-40">
       <div className="bg-black bg-opacity-50 w-full">
         <span
           className="absolute top-10 right-10 text-white text-5xl cursor-pointer"
